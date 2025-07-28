@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'cart_model.dart';
 import 'db_helper.dart';
 
@@ -70,6 +69,5 @@ class CartProvider with ChangeNotifier{
   int getCounter (){
     _getPrefItems();
     return  _counter ;
-
   }
 }

@@ -44,5 +44,4 @@ class Cart{
       'image'  : image,
     };
   }
-
 }

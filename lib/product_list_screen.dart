@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'cart_model.dart';
@@ -6,7 +7,7 @@ import 'cart_screen.dart';
 import 'db_helper.dart';
 
 class ProductListScreen extends StatefulWidget {
-  const ProductListScreen({Key? key}) : super(key: key);
+  const ProductListScreen({super.key});
 
   @override
   _ProductListScreenState createState() => _ProductListScreenState();
@@ -35,27 +36,27 @@ class _ProductListScreenState extends State<ProductListScreen> {
     final cart  = Provider.of<CartProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Product List'),
+        title: const Text('Product List'),
         centerTitle: true,
         actions: [
           InkWell(
             onTap: (){
-              Navigator.push(context,MaterialPageRoute(builder: (context) => CartScreen()));
+              Navigator.push(context,MaterialPageRoute(builder: (context) => const CartScreen()));
             },
             child: Center(
               child: Badge(
                 isLabelVisible: true,
                 label: Consumer<CartProvider>(
                   builder: (context, value , child){
-                    return Text(value.getCounter().toString(),style: TextStyle(color: Colors.white));
+                    return Text(value.getCounter().toString(),style: const TextStyle(color: Colors.white));
                   },
                 ),
-                child: Icon(Icons.shopping_bag_outlined),
+                child: const Icon(Icons.shopping_bag_outlined),
               ),
             ),
           ),
 
-          SizedBox(width: 20.0)
+          const SizedBox(width: 20.0)
         ],
       ),
       body: Column(
@@ -83,33 +84,24 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   image: NetworkImage(productImage[index].toString()),
                                 ),
                               ),
-                              SizedBox(width: 10,),
+                              const SizedBox(width: 10),
                               Expanded(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(productName[index].toString() ,
-                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                                     ),
-                                    SizedBox(height: 5,),
-                                    Text(productUnit[index].toString() +" "+r"$"+ productPrice[index].toString() ,
-                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                    const SizedBox(height: 5,),
+                                    Text('${productUnit[index]} \$${productPrice[index]}',
+                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                                     ),
-                                    SizedBox(height: 5,),
+                                    const SizedBox(height: 5,),
                                     Align(
                                       alignment: Alignment.centerRight,
                                       child: InkWell(
                                         onTap: (){
-                                          print(index);
-                                          print(index);
-                                          print(productName[index].toString());
-                                          print( productPrice[index].toString());
-                                          print( productPrice[index]);
-                                          print('1');
-                                          print(productUnit[index].toString());
-                                          print(productImage[index].toString());
-
                                           dbHelper!.insert(
                                               Cart(
                                                   id: index,
@@ -125,13 +117,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                             cart.addTotalPrice(double.parse(productPrice[index].toString()));
                                             cart.addCounter();
 
-                                            final snackBar = SnackBar(backgroundColor: Colors.green,content: Text('Product is added to cart'), duration: Duration(seconds: 1),);
+                                            const snackBar = SnackBar(backgroundColor: Colors.green,content: Text('Product is added to cart'), duration: Duration(seconds: 1),);
 
                                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                                           }).onError((error, stackTrace){
-                                            print("error"+error.toString());
-                                            final snackBar = SnackBar(backgroundColor: Colors.red ,content: Text('Product is already added in cart'), duration: Duration(seconds: 1));
+                                            if (kDebugMode) {
+                                              print("error$error");
+                                            }
+                                            const snackBar = SnackBar(backgroundColor: Colors.red ,content: Text('Product is already added in cart'), duration: Duration(seconds: 1));
 
                                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                           });
@@ -152,7 +146,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   ],
                                 ),
                               )
-
                             ],
                           )
                         ],
@@ -161,7 +154,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   );
                 }),
           ),
-
         ],
       ),
     );

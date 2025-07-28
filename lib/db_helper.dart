@@ -1,8 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'dart:io' as io;
-
 import 'cart_model.dart';
 
 class DBHelper {
@@ -15,12 +15,13 @@ class DBHelper {
     }
 
     _db = await initDatabase();
+    return null;
   }
 
   initDatabase()async{
     io.Directory documentDirectory = await getApplicationDocumentsDirectory() ;
     String path = join(documentDirectory.path , 'cart.db');
-    var db = await openDatabase(path , version: 1 , onCreate: _onCreate,);
+    var db = await openDatabase(path , version: 1 , onCreate: _onCreate);
     return db ;
   }
 
@@ -30,7 +31,9 @@ class DBHelper {
   }
 
   Future<Cart> insert(Cart cart)async{
-    print(cart.toMap());
+    if (kDebugMode) {
+      print(cart.toMap());
+    }
     var dbClient = await db ;
     await dbClient!.insert('cart', cart.toMap());
     return cart ;
@@ -40,7 +43,6 @@ class DBHelper {
     var dbClient = await db ;
     final List<Map<String , Object?>> queryResult =  await dbClient!.query('cart');
     return queryResult.map((e) => Cart.fromMap(e)).toList();
-
   }
 
   Future<int> delete(int id)async{
