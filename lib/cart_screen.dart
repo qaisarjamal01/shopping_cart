@@ -224,7 +224,6 @@ class _CartScreenState extends State<CartScreen> {
   }
 }
 
-
 class ReusableWidget extends StatelessWidget {
   final String title , value ;
   const ReusableWidget({super.key, required this.title, required this.value});
